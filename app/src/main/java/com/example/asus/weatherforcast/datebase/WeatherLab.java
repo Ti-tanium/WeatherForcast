@@ -2,6 +2,7 @@ package com.example.asus.weatherforcast.datebase;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.asus.weatherforcast.Weather;
@@ -30,11 +31,32 @@ public class WeatherLab {
     }
 
     public List<Weather> getWeathers() {
-        return new ArrayList<>();
+        List<Weather> weathers=new ArrayList<>();
+        WeatherCursorWrapper cursorWrapper=queryWeather(null,null);
+        try{
+            cursorWrapper.moveToFirst();
+            while (cursorWrapper.isAfterLast()){
+                weathers.add(cursorWrapper.getWeather());
+                cursorWrapper.moveToNext();
+            }
+        }finally {
+            cursorWrapper.close();
+        }
+        return weathers;
     }
 
     public Weather getWeather(UUID id){
-        return null;
+        WeatherCursorWrapper cursor=queryWeather(WeatherTable.Cols.UUID+" = ?",new String[]{id.toString()});
+        try{
+            if(cursor.getCount()==0){
+                return null;
+            }
+            cursor.moveToNext();
+            return cursor.getWeather();
+        }finally {
+            cursor.close();
+        }
+
     }
 
     private static ContentValues getContentValues(Weather weather){
@@ -64,6 +86,19 @@ public class WeatherLab {
         String uuidString=weather.getID().toString();
         ContentValues values=getContentValues(weather);
         mDatabase.update(WeatherTable.NAME,values,WeatherTable.Cols.UUID+" = ?",new String[]{uuidString});
+    }
+
+    private WeatherCursorWrapper queryWeather(String whereClause,String[] whereArgs){
+        Cursor cursor=mDatabase.query(
+                WeatherTable.NAME,
+                null,
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null
+        );
+        return new WeatherCursorWrapper(cursor);
     }
 
 }
