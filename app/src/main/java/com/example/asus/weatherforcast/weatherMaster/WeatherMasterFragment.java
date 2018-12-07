@@ -1,6 +1,6 @@
 package com.example.asus.weatherforcast.weatherMaster;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,9 +18,9 @@ import android.widget.TextView;
 import com.example.asus.weatherforcast.R;
 import com.example.asus.weatherforcast.Utils;
 import com.example.asus.weatherforcast.Weather;
+import com.example.asus.weatherforcast.weatherDetail.WeatherDetailActivity;
 import com.example.asus.weatherforcast.weatherfetcher.WeatherFetcher;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +65,7 @@ public class WeatherMasterFragment extends Fragment {
     }
 
 
-    private class WeatherHolder extends  RecyclerView.ViewHolder{
+    private class WeatherHolder extends  RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView mTime;
         private TextView mHighestTemp;
@@ -75,13 +75,20 @@ public class WeatherMasterFragment extends Fragment {
 
         private Weather mWeather;
 
-        public WeatherHolder(LayoutInflater inflater,ViewGroup parent){
+        @Override
+        public void onClick(View v) {
+            Intent intent=WeatherDetailActivity.newIntent(getActivity(),mWeather.getID());
+            startActivity(intent);
+        }
+
+        public WeatherHolder(LayoutInflater inflater, ViewGroup parent){
             super(inflater.inflate(R.layout.item_weather_list,parent,false));
             mTime=(TextView)itemView.findViewById(R.id.listitem_time);
             mHighestTemp=(TextView)itemView.findViewById(R.id.listitem_highest_temperature);
             mLowestTemp=(TextView)itemView.findViewById(R.id.listitem_lowest_temp);
             mWeatherConditionDay=(TextView)itemView.findViewById(R.id.listitem_weather_condition);
             mConditionImage=(ImageView)itemView.findViewById(R.id.listitem_condtion_image);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Weather weather){
