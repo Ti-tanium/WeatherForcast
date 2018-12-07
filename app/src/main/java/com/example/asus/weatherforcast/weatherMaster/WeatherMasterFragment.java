@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.asus.weatherforcast.R;
 import com.example.asus.weatherforcast.Utils;
 import com.example.asus.weatherforcast.Weather;
+import com.example.asus.weatherforcast.datebase.WeatherLab;
 import com.example.asus.weatherforcast.weatherDetail.WeatherDetailActivity;
 import com.example.asus.weatherforcast.weatherfetcher.WeatherFetcher;
 
@@ -61,6 +62,13 @@ public class WeatherMasterFragment extends Fragment {
         if(isAdded()){
             mAdapter=new WeatherAdapter(mWeathers);
             mWeatherRecyclerView.setAdapter(mAdapter);
+        }
+    }
+
+    private void storeWeather(){
+        WeatherLab weatherLab=WeatherLab.get(getActivity());
+        for(Weather weather:mWeathers){
+            weatherLab.addWeather(weather);
         }
     }
 
@@ -149,6 +157,7 @@ public class WeatherMasterFragment extends Fragment {
             mTodayWeatherCondition.setText(todayWeather.getCondition_day());
             mWeathers=weathers;
             setupAdapter();
+            storeWeather();
         }
     }
 }
