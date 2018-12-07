@@ -151,7 +151,7 @@ public class WeatherMasterFragment extends Fragment {
             String imageFileName="cond"+todayWeather.getCondition_code_day();
             int imageResId=Utils.getResourceByReflect(imageFileName);
             mTodayConditionImage.setImageResource(imageResId);
-            mTodayDate.setText(todayWeather.getWDate());
+            mTodayDate.setText(todayWeather.getFormattedDate());
             mTodayMaxTemp.setText(todayWeather.getTmp_max());
             mTodayMinTemp.setText(todayWeather.getTmp_min());
             mTodayWeatherCondition.setText(todayWeather.getCondition_day());

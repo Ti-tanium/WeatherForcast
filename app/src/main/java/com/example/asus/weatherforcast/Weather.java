@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.UUID;
 
 
+
 public class Weather {
     private UUID mID;
     private Date mWDate;
@@ -27,19 +28,44 @@ public class Weather {
     private static final String TAG="Weather";
     private static final String[] DayofWeek=new String[]{"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
 
+    private boolean mHumidityFormatted;
+    private boolean mPressureFormatted;
+    private boolean mWindSpeedFormatted;
+    private boolean tmp_maxFormatted;
+    private boolean tmp_minFormatted;
+
     public Weather(){
         mID=UUID.randomUUID();
+        mHumidityFormatted=false;
+        mPressureFormatted=false;
+        mWindSpeedFormatted=false;
+        tmp_maxFormatted=false;
+        tmp_minFormatted=false;
     }
 
-    public String getWDate() {
+    public Weather(UUID id){
+        mID=id;
+    }
+
+    public String getFormattedDate() {
         DateFormat format=new SimpleDateFormat("MMM d");
         return mWDay+","+format.format(mWDate);
     }
 
+    public String getWDate(){
+        return mWDate.toString();
+    }
+
     public void setWDate(String date) {
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-mm-dd");
+        mWDate=new Date(date);
+    }
+
+    public void setDateFromFetch(String date){
+        Log.i("date before format:",date);
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
         try {
             mWDate = format.parse(date);
+            Log.i("setDateFromFetch:",mWDate.toString());
             setWDay(DayofWeek[mWDate.getDay()]);
         }catch (ParseException pe){
             Log.e(TAG,"Date parsing error");
@@ -59,7 +85,12 @@ public class Weather {
     }
 
     public void setTmp_max(String tmp_max) {
-        this.tmp_max = tmp_max+"°";
+        if(!tmp_maxFormatted){
+            this.tmp_max = tmp_max+"°";
+        }else {
+            this.tmp_max=tmp_max;
+        }
+
     }
 
     public String  getTmp_min() {
@@ -67,7 +98,11 @@ public class Weather {
     }
 
     public void setTmp_min(String  tmp_min) {
-        this.tmp_min = tmp_min+"°";
+        if(!tmp_minFormatted){
+            this.tmp_min = tmp_min+"°";
+        }else {
+            this.tmp_min=tmp_min;
+        }
     }
 
     public String getCondition_day() {
@@ -115,7 +150,11 @@ public class Weather {
     }
 
     public void setHumidity(String humidity) {
-        mHumidity = humidity+"%";
+        if(!mHumidityFormatted){
+            this.mHumidity = humidity+"%";
+        }else {
+            this.mHumidity=humidity;
+        }
     }
 
     public String getPressure() {
@@ -123,7 +162,11 @@ public class Weather {
     }
 
     public void setPressure(String pressure) {
-        mPressure = pressure+"hPa";
+        if(!mPressureFormatted){
+            mPressure = pressure+"hPa";
+        }else {
+            mPressure=pressure;
+        }
     }
 
     public String getWindSpeed() {
@@ -131,7 +174,11 @@ public class Weather {
     }
 
     public void setWindSpeed(String windSpeed) {
-        mWindSpeed = windSpeed+"km/h";
+        if(!mWindSpeedFormatted){
+            mWindSpeed = windSpeed+"km/h";
+        }else {
+            mWindSpeed=windSpeed;
+        }
     }
 
     public String getWindDirection() {

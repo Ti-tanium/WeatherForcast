@@ -64,7 +64,7 @@ public class WeatherFetcher {
             weather.setCondition_code_night(dailyForecastObject.getString("cond_code_n"));
             weather.setTmp_max(dailyForecastObject.getString("tmp_max"));
             weather.setTmp_min(dailyForecastObject.getString("tmp_min"));
-            weather.setWDate(dailyForecastObject.getString("date"));
+            weather.setDateFromFetch(dailyForecastObject.getString("date"));
             weather.setHumidity(dailyForecastObject.getString("hum"));
             weather.setPressure(dailyForecastObject.getString("pres"));
             weather.setWindSpeed(dailyForecastObject.getString("wind_spd"));
