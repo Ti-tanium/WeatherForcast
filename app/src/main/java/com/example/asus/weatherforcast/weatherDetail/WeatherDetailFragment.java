@@ -1,5 +1,6 @@
 package com.example.asus.weatherforcast.weatherDetail;
 
+import android.media.MediaExtractor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.asus.weatherforcast.R;
+import com.example.asus.weatherforcast.Utils;
 import com.example.asus.weatherforcast.Weather;
+import com.example.asus.weatherforcast.datebase.WeatherLab;
+
+import java.util.UUID;
 
 public class WeatherDetailFragment extends Fragment {
     private Weather mWeather;
@@ -40,11 +45,28 @@ public class WeatherDetailFragment extends Fragment {
         mDetailAirPressure=(TextView)view.findViewById(R.id.detail_pressure);
         mDetailWindDirection=(TextView)view.findViewById(R.id.detail_wind_direction);
         mDetailWindSpeed=(TextView)view.findViewById(R.id.detail_wind_speed);
+
+        mDetailDay.setText(mWeather.getWDay());
+        mDetailDate.setText(mWeather.getMounthDay());
+        mDetailMaxTemp.setText(mWeather.getTmp_max());
+        mDetailMinTemp.setText(mWeather.getTmp_min());
+        mDetailWeatherCondition.setText(mWeather.getCondition_day());
+        mDetailHumidity.setText(mWeather.getHumidity());
+        mDetailAirPressure.setText(mWeather.getPressure());
+        mDetailWindDirection.setText(mWeather.getWindDirection());
+        mDetailWindSpeed.setText(mWeather.getWindSpeed());
+
+        String imageFileName="cond"+mWeather.getCondition_code_day();
+        int imageResId= Utils.getResourceByReflect(imageFileName);
+        mDetailConditionImage.setImageResource(imageResId);
+
         return view;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UUID weatherId=(UUID)getActivity().getIntent().getSerializableExtra(WeatherDetailActivity.EXTRA_WEATHER_ID);
+        mWeather= WeatherLab.get(getActivity()).getWeather(weatherId);
     }
 }

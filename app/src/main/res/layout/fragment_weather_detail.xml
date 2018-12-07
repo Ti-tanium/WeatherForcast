@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="117dp"
-        android:text="78%"
+        android:text="78"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="1080hPa"
+        android:text="1080"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView7"
@@ -136,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="3km/h"
+        android:text="3"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView8"
@@ -165,4 +165,56 @@
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/detail_wind_speed" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="°"
+        android:textSize="80sp"
+        app:layout_constraintStart_toEndOf="@+id/detail_max_temp"
+        app:layout_constraintTop_toBottomOf="@+id/detail_date" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="°"
+        android:textSize="40sp"
+        app:layout_constraintStart_toEndOf="@+id/detail_min_temp"
+        app:layout_constraintTop_toBottomOf="@+id/detail_max_temp" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="117dp"
+        android:text="%"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/detail_humidity"
+        app:layout_constraintTop_toBottomOf="@+id/detail_max_temp" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="hPa"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/detail_pressure"
+        app:layout_constraintTop_toBottomOf="@+id/detail_humidity" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="km/h"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/detail_wind_speed"
+        app:layout_constraintTop_toBottomOf="@+id/detail_pressure" />
 </android.support.constraint.ConstraintLayout>

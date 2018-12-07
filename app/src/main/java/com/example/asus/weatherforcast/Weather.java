@@ -28,19 +28,8 @@ public class Weather {
     private static final String TAG="Weather";
     private static final String[] DayofWeek=new String[]{"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
 
-    private boolean mHumidityFormatted;
-    private boolean mPressureFormatted;
-    private boolean mWindSpeedFormatted;
-    private boolean tmp_maxFormatted;
-    private boolean tmp_minFormatted;
-
     public Weather(){
         mID=UUID.randomUUID();
-        mHumidityFormatted=false;
-        mPressureFormatted=false;
-        mWindSpeedFormatted=false;
-        tmp_maxFormatted=false;
-        tmp_minFormatted=false;
     }
 
     public Weather(UUID id){
@@ -50,6 +39,11 @@ public class Weather {
     public String getFormattedDate() {
         DateFormat format=new SimpleDateFormat("MMM d");
         return mWDay+","+format.format(mWDate);
+    }
+
+    public String getMounthDay(){
+        DateFormat format=new SimpleDateFormat("MMM d");
+        return format.format(mWDate);
     }
 
     public String getWDate(){
@@ -85,12 +79,7 @@ public class Weather {
     }
 
     public void setTmp_max(String tmp_max) {
-        if(!tmp_maxFormatted){
-            this.tmp_max = tmp_max+"°";
-        }else {
-            this.tmp_max=tmp_max;
-        }
-
+        this.tmp_max=tmp_max;
     }
 
     public String  getTmp_min() {
@@ -98,11 +87,7 @@ public class Weather {
     }
 
     public void setTmp_min(String  tmp_min) {
-        if(!tmp_minFormatted){
-            this.tmp_min = tmp_min+"°";
-        }else {
-            this.tmp_min=tmp_min;
-        }
+        this.tmp_min=tmp_min;
     }
 
     public String getCondition_day() {
@@ -150,11 +135,7 @@ public class Weather {
     }
 
     public void setHumidity(String humidity) {
-        if(!mHumidityFormatted){
-            this.mHumidity = humidity+"%";
-        }else {
-            this.mHumidity=humidity;
-        }
+        this.mHumidity=humidity;
     }
 
     public String getPressure() {
@@ -162,11 +143,7 @@ public class Weather {
     }
 
     public void setPressure(String pressure) {
-        if(!mPressureFormatted){
-            mPressure = pressure+"hPa";
-        }else {
-            mPressure=pressure;
-        }
+        mPressure=pressure;
     }
 
     public String getWindSpeed() {
@@ -174,11 +151,7 @@ public class Weather {
     }
 
     public void setWindSpeed(String windSpeed) {
-        if(!mWindSpeedFormatted){
-            mWindSpeed = windSpeed+"km/h";
-        }else {
-            mWindSpeed=windSpeed;
-        }
+        mWindSpeed=windSpeed;
     }
 
     public String getWindDirection() {
