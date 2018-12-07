@@ -64,7 +64,6 @@ public class WeatherMasterFragment extends Fragment {
         }
     }
 
-
     private class WeatherHolder extends  RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView mTime;
