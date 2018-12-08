@@ -27,7 +27,6 @@ public class WeatherLab {
     private WeatherLab(Context context){
         mContext=context.getApplicationContext();
         mDatabase=new WeatherBaseOpenHelper(mContext).getWritableDatabase();
-
     }
 
     public List<Weather> getWeathers() {

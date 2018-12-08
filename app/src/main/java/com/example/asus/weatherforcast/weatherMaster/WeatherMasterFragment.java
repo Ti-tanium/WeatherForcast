@@ -11,6 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,6 +23,7 @@ import com.example.asus.weatherforcast.R;
 import com.example.asus.weatherforcast.Utils;
 import com.example.asus.weatherforcast.Weather;
 import com.example.asus.weatherforcast.datebase.WeatherLab;
+import com.example.asus.weatherforcast.setting.SettingActivity;
 import com.example.asus.weatherforcast.weatherDetail.WeatherDetailActivity;
 import com.example.asus.weatherforcast.weatherfetcher.WeatherFetcher;
 
@@ -41,6 +45,7 @@ public class WeatherMasterFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -55,7 +60,6 @@ public class WeatherMasterFragment extends Fragment {
         mWeatherRecyclerView=(RecyclerView)v.findViewById(R.id.master_weather_recyclerview);
         mWeatherRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         new FetchWeatherTask().execute();
-
         return v;
     }
 
@@ -160,6 +164,27 @@ public class WeatherMasterFragment extends Fragment {
             mWeathers=weathers;
             setupAdapter();
             storeWeather();
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_weather_master,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.settings:
+                // do something
+                Intent intent=new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.location:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
