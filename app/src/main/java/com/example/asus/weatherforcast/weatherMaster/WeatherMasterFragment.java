@@ -1,6 +1,7 @@
 package com.example.asus.weatherforcast.weatherMaster;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -151,6 +152,7 @@ public class WeatherMasterFragment extends Fragment {
             String imageFileName="cond"+todayWeather.getCondition_code_day();
             int imageResId=Utils.getResourceByReflect(imageFileName);
             mTodayConditionImage.setImageResource(imageResId);
+            mTodayConditionImage.setColorFilter(Color.WHITE);
             mTodayDate.setText(todayWeather.getFormattedDate());
             mTodayMaxTemp.setText(todayWeather.getTmp_max());
             mTodayMinTemp.setText(todayWeather.getTmp_min());
