@@ -95,7 +95,7 @@ public class WeatherDetailFragment extends Fragment {
     }
 
     private String getWeatherReport(){
-        String report=getString(R.string.share_format,mWeather.getWDay(),mWeather.getCondition_day(),mWeather.getTmp_max(),mWeather.getTmp_min(),mWeather.getHumidity(),mWeather.getPressure(),mWeather.getWindDirection());
+        String report=getString(R.string.share_format,mWeather.getFormattedDate(),mWeather.getCondition_day(),mWeather.getTmp_max(),mWeather.getTmp_min(),mWeather.getHumidity(),mWeather.getPressure(),mWeather.getWindDirection());
         return report;
     }
 
