@@ -79,7 +79,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/head_max_temp_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -90,7 +90,7 @@
             app:layout_constraintTop_toBottomOf="@+id/master_today_date" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/head_min_temp_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="35dp"

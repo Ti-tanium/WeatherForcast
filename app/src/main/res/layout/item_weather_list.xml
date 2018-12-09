@@ -46,7 +46,7 @@
         android:id="@+id/listitem_highest_temperature"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
-        android:layout_marginStart="320dp"
+        android:layout_marginStart="310dp"
         android:layout_marginTop="8dp"
         android:text="27"
         android:textColor="@android:color/background_dark"
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="13dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="320dp"
+        android:layout_marginStart="310dp"
         android:layout_marginTop="8dp"
         android:text="16"
         android:textSize="10sp"
@@ -67,24 +67,28 @@
         app:layout_constraintTop_toBottomOf="@+id/listitem_highest_temperature" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:id="@+id/item_max_temp_unit"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:text="°"
         android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/listitem_highest_temperature"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+        android:id="@+id/item_min_temp_unit"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:text="°"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/listitem_lowest_temp"
         app:layout_constraintTop_toBottomOf="@+id/listitem_highest_temperature" />
 

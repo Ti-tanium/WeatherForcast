@@ -33,41 +33,41 @@
         android:id="@+id/detail_max_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="228dp"
+        android:layout_marginStart="60dp"
         android:text="26"
         android:textSize="80sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detail_date" />
 
     <TextView
         android:id="@+id/detail_min_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="242dp"
+        android:layout_marginStart="97dp"
         android:layout_marginTop="8dp"
         android:text="16"
         android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detail_max_temp" />
 
     <ImageView
         android:id="@+id/detail_condition_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="80dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detail_max_temp_unit"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/detail_weather_condition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="72dp"
+        android:layout_marginStart="75dp"
         android:layout_marginTop="20dp"
         android:text="Cloud"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detail_max_temp_unit"
         app:layout_constraintTop_toBottomOf="@+id/detail_condition_image" />
 
     <TextView
@@ -167,7 +167,7 @@
         app:layout_constraintTop_toBottomOf="@+id/detail_wind_speed" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/detail_max_temp_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="°"
@@ -176,7 +176,7 @@
         app:layout_constraintTop_toBottomOf="@+id/detail_date" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/detail_min_temp_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -208,7 +208,7 @@
         app:layout_constraintTop_toBottomOf="@+id/detail_humidity" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/detail_speed_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"

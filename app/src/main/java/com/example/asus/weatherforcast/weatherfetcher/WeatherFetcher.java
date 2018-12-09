@@ -79,13 +79,15 @@ public class WeatherFetcher {
         }
     }
 
-    public List<Weather> fetchWeather(String location){
+    public List<Weather> fetchWeather(String location,String unit){
         List<Weather>weathers=new ArrayList<>();
         try{
             String url= Uri.parse(HEFENG_API_URL)
                     .buildUpon()
                     .appendQueryParameter("location",location)
                     .appendQueryParameter("key",API_KEY)
+                    .appendQueryParameter("unit",unit)
+                    .appendQueryParameter("lang","en")
                     .build().toString();
             String jsonString=getUrlString(url);
             Log.i(TAG,"JSON Received:"+jsonString);

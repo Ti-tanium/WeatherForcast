@@ -4,7 +4,7 @@
     <string name="tomorrow">Tomorrow</string>
     <string name="settings">Settings</string>
     <string name="location">Location</string>
-    <string name="TemperatureUnits">Temperature Units</string>
+    <string name="TemperatureUnits">Units System</string>
     <string name="weatherNotification">Weather Notification</string>
     <string name="KEY_SETTING_LOCATION">KEY_SETTING_LOCATION</string>
     <string name="KEY_SETTING_TEMPERATUREUNITS">KEY_SETTING_TEMPERATUREUNITS</string>
@@ -13,4 +13,13 @@
     <string name="british_fahrenheit_scale">°F</string>
     <string name="metric_speed">km/h</string>
     <string name="british_speed">mile/h</string>
+    <string name="menu_icon_title_share">Share</string>
+    <string name="share_format">Hi!Today is %1$s,the weather today is %2$s,the highest temperature will reach %3$s while the lowest %4$s.The humidity to day will be %5$s.The air pressure today is %6$s,and the wind direction is %7$s.Have a nice day!</string>
+    <string name="share_subject">WeatherForecast Sharing</string>
+    <string name="share_weather_via">Share weather forecast via</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+    <string name="notification_title">Today\'s Weather. </string>
+    <string name="notification_detail">Today\'s weather has been updated!Check out what clothes should you wear!</string>
+
 </resources>

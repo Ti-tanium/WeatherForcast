@@ -1,9 +1,11 @@
 package com.example.asus.weatherforcast.weatherMaster;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.asus.weatherforcast.Notification.PollService;
 import com.example.asus.weatherforcast.R;
 import com.example.asus.weatherforcast.Utils;
 import com.example.asus.weatherforcast.Weather;
@@ -39,11 +42,15 @@ public class WeatherMasterFragment extends Fragment {
     private ImageView mTodayConditionImage;
     private RecyclerView mWeatherRecyclerView;
     private WeatherAdapter mAdapter;
+    private boolean mIsBritishSystem;
+    private TextView mTodayMaxTempUnit;
+    private TextView mTodayMinTempUnit;
     private List<Weather>mWeathers=new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG,"onCreate");
         setRetainInstance(true);
         setHasOptionsMenu(true);
     }
@@ -52,13 +59,20 @@ public class WeatherMasterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_weather_master,container,false);
+        Log.i(TAG,"onCreateViewCalled");
+        mWeatherRecyclerView=(RecyclerView)v.findViewById(R.id.master_weather_recyclerview);
+        mWeatherRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mTodayDate=(TextView)v.findViewById(R.id.master_today_date);
         mTodayMaxTemp=(TextView)v.findViewById(R.id.master_highest_temperature);
         mTodayMinTemp=(TextView)v.findViewById(R.id.master_lowest_temperature);
         mTodayWeatherCondition=(TextView)v.findViewById(R.id.master_weather_condition);
         mTodayConditionImage=(ImageView)v.findViewById(R.id.master_condition_image);
-        mWeatherRecyclerView=(RecyclerView)v.findViewById(R.id.master_weather_recyclerview);
-        mWeatherRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mTodayMaxTempUnit=(TextView)v.findViewById(R.id.head_max_temp_unit);
+        mTodayMinTempUnit=(TextView)v.findViewById(R.id.head_min_temp_unit);
+        SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(getActivity());
+        boolean isNotificationOn=sharedPreferences.getBoolean(getString(R.string.KEY_SETTING_WEATHERNOTIFICATION),false);
+        Log.i("Notification on?", ""+isNotificationOn);
+        PollService.setServiceAlarm(getActivity(),isNotificationOn);
         new FetchWeatherTask().execute();
         return v;
     }
@@ -84,7 +98,8 @@ public class WeatherMasterFragment extends Fragment {
         private TextView mLowestTemp;
         private TextView mWeatherConditionDay;
         private ImageView mConditionImage;
-
+        private TextView mItemMaxTempUnit;
+        private TextView mItemMinTempUnit;
         private Weather mWeather;
 
         @Override
@@ -100,6 +115,8 @@ public class WeatherMasterFragment extends Fragment {
             mLowestTemp=(TextView)itemView.findViewById(R.id.listitem_lowest_temp);
             mWeatherConditionDay=(TextView)itemView.findViewById(R.id.listitem_weather_condition);
             mConditionImage=(ImageView)itemView.findViewById(R.id.listitem_condtion_image);
+            mItemMinTempUnit=(TextView)itemView.findViewById(R.id.item_min_temp_unit);
+            mItemMaxTempUnit=(TextView)itemView.findViewById(R.id.item_max_temp_unit);
             itemView.setOnClickListener(this);
         }
 
@@ -109,6 +126,13 @@ public class WeatherMasterFragment extends Fragment {
             mHighestTemp.setText(weather.getTmp_max());
             mLowestTemp.setText(weather.getTmp_min());
             mWeatherConditionDay.setText(weather.getCondition_day());
+
+            mItemMaxTempUnit.setText(mIsBritishSystem?getString(R.string.british_fahrenheit_scale):getString(R.string.metric_celsius_scale));
+            mItemMinTempUnit.setText(mIsBritishSystem?getString(R.string.british_fahrenheit_scale):getString(R.string.metric_celsius_scale));
+            mTodayMaxTempUnit.setText(mIsBritishSystem?getString(R.string.british_fahrenheit_scale):getString(R.string.metric_celsius_scale));
+            mTodayMinTempUnit.setText(mIsBritishSystem?getString(R.string.british_fahrenheit_scale):getString(R.string.metric_celsius_scale));
+
+
             Log.d("Condition Code:",weather.getCondition_code_day());
             String imageFileName="cond"+weather.getCondition_code_day();
             Log.d("ImageFileName:",imageFileName);
@@ -133,6 +157,8 @@ public class WeatherMasterFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(WeatherHolder holder, int position) {
+            SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(getActivity());
+            mIsBritishSystem=sharedPreferences.getBoolean(getString(R.string.KEY_SETTING_TEMPERATUREUNITS),false);
             Weather weather=mWeathers.get(position);
             holder.bind(weather);
         }
@@ -146,13 +172,17 @@ public class WeatherMasterFragment extends Fragment {
     private class FetchWeatherTask extends AsyncTask<Void,Void,List<Weather>>{
         @Override
         protected List<Weather> doInBackground(Void... voids) {
-            return new WeatherFetcher().fetchWeather("长沙");
+            SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String location=sharedPreferences.getString(getString(R.string.KEY_SETTING_LOCATION),"长沙");
+            Boolean isBritishSystem=sharedPreferences.getBoolean(getString(R.string.KEY_SETTING_TEMPERATUREUNITS),false);
+            String unit=isBritishSystem?"i":"m";
+            return new WeatherFetcher().fetchWeather(location,unit);
         }
 
         @Override
         protected void onPostExecute(List<Weather> weathers) {
             Weather todayWeather=weathers.get(0);
-            weathers.remove(0);
+//            weathers.remove(0);
             String imageFileName="cond"+todayWeather.getCondition_code_day();
             int imageResId=Utils.getResourceByReflect(imageFileName);
             mTodayConditionImage.setImageResource(imageResId);
@@ -171,6 +201,7 @@ public class WeatherMasterFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_weather_master,menu);
+        Log.i(TAG,"onCreateOptionsMenu");
     }
 
     @Override

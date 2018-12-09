@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference
+    <EditTextPreference
         android:key="@string/KEY_SETTING_LOCATION"
         android:title="@string/location"
         android:summary="长沙"
-        ></Preference>
+        android:defaultValue="长沙"
+        android:inputType="textPostalAddress"
+        ></EditTextPreference>
     <SwitchPreferenceCompat
         android:key="@string/KEY_SETTING_TEMPERATUREUNITS"
         android:title="@string/TemperatureUnits"
-        android:summary="metric"
+        android:summary="Metric"
         android:defaultValue="false"
         ></SwitchPreferenceCompat>
     <SwitchPreferenceCompat
