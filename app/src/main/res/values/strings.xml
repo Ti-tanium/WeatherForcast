@@ -21,5 +21,11 @@
     <string name="disabled">Disabled</string>
     <string name="notification_title">Today\'s Weather. </string>
     <string name="notification_detail">Today\'s weather has been updated!Check out what clothes should you wear!</string>
+    <string name="detail">Detail</string>
+    <string name="current_latitude">KEY_CURRENT_LATITUDE</string>
+    <string name="current_longitude">KEY_CURRENT_LONGITUDE</string>
+    <string name="current_province">KEY_CURRENT_PROVINCE</string>
+    <string name="current_city_code">KEY_CURRENT_CITYCODE</string>
+    <string name="current_city">KEY_CURRENT_CITY</string>
 
 </resources>

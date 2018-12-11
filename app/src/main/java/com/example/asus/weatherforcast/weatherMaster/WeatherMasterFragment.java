@@ -26,6 +26,7 @@ import com.example.asus.weatherforcast.R;
 import com.example.asus.weatherforcast.Utils;
 import com.example.asus.weatherforcast.Weather;
 import com.example.asus.weatherforcast.datebase.WeatherLab;
+import com.example.asus.weatherforcast.map.MapActivity;
 import com.example.asus.weatherforcast.setting.SettingActivity;
 import com.example.asus.weatherforcast.weatherDetail.WeatherDetailActivity;
 import com.example.asus.weatherforcast.weatherfetcher.WeatherFetcher;
@@ -213,6 +214,8 @@ public class WeatherMasterFragment extends Fragment {
                 startActivity(intent);
                 return true;
             case R.id.location:
+                Intent intent1=new Intent(getActivity(), MapActivity.class);
+                startActivity(intent1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
