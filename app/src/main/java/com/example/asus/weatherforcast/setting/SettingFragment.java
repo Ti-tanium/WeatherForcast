@@ -2,13 +2,10 @@ package com.example.asus.weatherforcast.setting;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
@@ -17,10 +14,10 @@ import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.example.asus.weatherforcast.Notification.PollService;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.example.asus.weatherforcast.R;
 import com.zaaach.citypicker.CityPicker;
 import com.zaaach.citypicker.adapter.OnPickListener;
@@ -33,14 +30,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SettingFragment extends PreferenceFragmentCompat implements BDLocationListener {
+public class SettingFragment extends PreferenceFragmentCompat implements AMapLocationListener {
     private Preference mLocationPreference;
     private Preference mUnitPreference;
     private Preference mNotificationPreference;
     private List<HotCity> hotCities;
-
+    private AMapLocationClient mLocationClient;
+    private AMapLocationClientOption mLocationOption;
     private SharedPreferences mSharedPreferences;
     private Activity mActivity;
+
+    @Override
+    public void onLocationChanged(AMapLocation amapLocation) {
+        if (amapLocation != null) {
+            if (amapLocation.getErrorCode() == 0) {
+                //可在其中解析amapLocation获取相应内容。
+                String city=amapLocation.getCity();
+                String province=amapLocation.getProvince();
+                String cityCode=amapLocation.getCityCode();
+                String latitude=amapLocation.getLatitude()+"";
+                String longitude=amapLocation.getLongitude()+"";
+                mSharedPreferences
+                        .edit()
+                        .putString(getString(R.string.current_city),city)
+                        .putString(getString(R.string.current_city_code),cityCode)
+                        .putString(getString(R.string.current_province),province)
+                        .putString(getString(R.string.current_latitude),latitude)
+                        .putString(getString(R.string.current_longitude),longitude)
+                        .apply();
+
+                Log.i("located information:","city:"+city+"\nprovince"+province+"\ncitycode:"+cityCode+"\nlatitude:"+latitude+"\nlongitude:"+longitude);
+                CityPicker.from(SettingFragment.this).locateComplete(new LocatedCity(city, province, cityCode), LocateState.SUCCESS);
+            }else {
+                //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError","location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
+            }
+        }
+        mLocationClient.stopLocation();
+        mLocationClient.onDestroy();
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -48,6 +78,16 @@ public class SettingFragment extends PreferenceFragmentCompat implements BDLocat
         mSharedPreferences=PreferenceManager.getDefaultSharedPreferences(getActivity());
         mActivity=getActivity();
 
+        // location
+        mLocationClient=new AMapLocationClient(getActivity().getApplicationContext());
+        mLocationOption=new AMapLocationClientOption();
+        mLocationOption.setOnceLocationLatest(true);
+        mLocationClient.setLocationListener(this);
+        mLocationOption.setNeedAddress(true);
+        mLocationOption.setHttpTimeOut(20000);
+        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.stopLocation();
+        mLocationClient.startLocation();
         // initiate
 
         mLocationPreference=findPreference(getString(R.string.KEY_SETTING_LOCATION));
@@ -96,9 +136,6 @@ public class SettingFragment extends PreferenceFragmentCompat implements BDLocat
 
     }
 
-
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -142,7 +179,7 @@ public class SettingFragment extends PreferenceFragmentCompat implements BDLocat
                             ActivityCompat.requestPermissions(getActivity(),permissions,1);
                         }else {
                             Log.i("AAA else","requestLocation called");
-                            requestLocation();
+                            mLocationClient.startLocation();
                         }
                         //定位接口，需要APP自身实现，这里模拟一下定位
                     }
