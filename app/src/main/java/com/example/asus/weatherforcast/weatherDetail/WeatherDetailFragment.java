@@ -40,6 +40,15 @@ public class WeatherDetailFragment extends Fragment {
     private TextView mDetailMaxTempUnit;
     private TextView mDetailMinTempUnit;
     private TextView mDetailSpeedUnit;
+    private static final String ARG_WEATHER_ID="weather_id";
+
+    public static WeatherDetailFragment newInstance(UUID weatherId){
+        Bundle args=new Bundle();
+        args.putSerializable(ARG_WEATHER_ID,weatherId);
+        WeatherDetailFragment fragment=new WeatherDetailFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
@@ -90,7 +99,7 @@ public class WeatherDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID weatherId=(UUID)getActivity().getIntent().getSerializableExtra(WeatherDetailActivity.EXTRA_WEATHER_ID);
+        UUID weatherId=(UUID)getArguments().getSerializable(ARG_WEATHER_ID);
         mWeather= WeatherLab.get(getActivity()).getWeather(weatherId);
     }
 

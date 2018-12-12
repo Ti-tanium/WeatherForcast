@@ -1,5 +1,6 @@
 package com.example.asus.weatherforcast.weatherMaster;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -34,6 +35,8 @@ import com.example.asus.weatherforcast.weatherfetcher.WeatherFetcher;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.callback.Callback;
+
 public class WeatherMasterFragment extends Fragment {
     private static final String TAG="WeatherMasterFragment";
     private TextView mTodayDate;
@@ -47,6 +50,23 @@ public class WeatherMasterFragment extends Fragment {
     private TextView mTodayMaxTempUnit;
     private TextView mTodayMinTempUnit;
     private List<Weather>mWeathers=new ArrayList<>();
+    private CallBacks mCallBacks;
+
+    public interface CallBacks{
+        void onWeatherSelected(Weather weather);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallBacks=(CallBacks)context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallBacks=null;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,8 +125,7 @@ public class WeatherMasterFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent=WeatherDetailActivity.newIntent(getActivity(),mWeather.getID());
-            startActivity(intent);
+            mCallBacks.onWeatherSelected(mWeather);
         }
 
         public WeatherHolder(LayoutInflater inflater, ViewGroup parent){

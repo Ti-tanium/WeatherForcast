@@ -11,12 +11,13 @@ import com.example.asus.weatherforcast.SingleFragmentActivity;
 import java.util.UUID;
 
 public class WeatherDetailActivity extends SingleFragmentActivity {
-    public static final String EXTRA_WEATHER_ID="com.example.asus.weatherforecast.weatherDetail.WeatherDetailActivity";
+    private static final String EXTRA_WEATHER_ID="com.example.asus.weatherforecast.weatherDetail.WeatherDetailActivity";
 
 
     @Override
     protected Fragment createFragment() {
-        return new WeatherDetailFragment();
+        UUID weatherId=(UUID)getIntent().getSerializableExtra(EXTRA_WEATHER_ID);
+        return WeatherDetailFragment.newInstance(weatherId);
     }
 
     public static Intent newIntent(Context packageContext, UUID weatherID){
