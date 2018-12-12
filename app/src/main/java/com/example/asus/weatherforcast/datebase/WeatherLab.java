@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.asus.weatherforcast.Weather;
 import com.example.asus.weatherforcast.datebase.WeatherDbSchema.WeatherTable;
@@ -16,6 +17,7 @@ public class WeatherLab {
     private static WeatherLab sWeatherLab;
     private Context mContext;
     private SQLiteDatabase mDatabase;
+    private static final String TAG="WeatherLab";
 
     public static WeatherLab get(Context context){
         if(sWeatherLab==null){
@@ -30,17 +32,22 @@ public class WeatherLab {
     }
 
     public List<Weather> getWeathers() {
+        Log.i("DBDEBUG-getWeathers:","called");
         List<Weather> weathers=new ArrayList<>();
         WeatherCursorWrapper cursorWrapper=queryWeather(null,null);
         try{
             cursorWrapper.moveToFirst();
-            while (cursorWrapper.isAfterLast()){
+            while (!cursorWrapper.isAfterLast()){
                 weathers.add(cursorWrapper.getWeather());
                 cursorWrapper.moveToNext();
             }
-        }finally {
+        }catch (Exception e){
+            Log.e(TAG,e.getStackTrace().toString());
+        }
+        finally {
             cursorWrapper.close();
         }
+        Log.i("DBDEBUG-getWeathersIsEP",weathers.isEmpty()+"");
         return weathers;
     }
 
@@ -79,6 +86,7 @@ public class WeatherLab {
     public void addWeather(Weather weather){
         ContentValues values=getContentValues(weather);
         mDatabase.insert(WeatherTable.NAME,null,values);
+        Log.i(TAG,"weather:"+weather.getID()+" inserted.");
     }
 
     public void updateWeather(Weather weather){

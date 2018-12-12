@@ -2,6 +2,7 @@ package com.example.asus.weatherforcast.datebase;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
+import android.util.Log;
 
 import com.example.asus.weatherforcast.Weather;
 
@@ -13,6 +14,7 @@ public class WeatherCursorWrapper extends CursorWrapper {
     }
 
     public Weather getWeather(){
+        Log.i("DBDEBUG-CsWrpr.getWet:","called");
         String uuidString=getString(getColumnIndex(WeatherDbSchema.WeatherTable.Cols.UUID));
         String date=getString(getColumnIndex(WeatherDbSchema.WeatherTable.Cols.DATE));
         String day=getString(getColumnIndex(WeatherDbSchema.WeatherTable.Cols.DAY));
@@ -26,7 +28,7 @@ public class WeatherCursorWrapper extends CursorWrapper {
         String pressure=getString(getColumnIndex(WeatherDbSchema.WeatherTable.Cols.AIRPRESSURE));
         String windspeed=getString(getColumnIndex(WeatherDbSchema.WeatherTable.Cols.WINDSPEED));
         String winddir=getString(getColumnIndex(WeatherDbSchema.WeatherTable.Cols.WINDDIRECTION));
-
+        Log.i("DBDEBUG-Wrapp.getWetr:","ID:"+uuidString);
         Weather weather=new Weather(UUID.fromString(uuidString));
         weather.setWDate(date);
         weather.setWDay(day);
@@ -40,7 +42,6 @@ public class WeatherCursorWrapper extends CursorWrapper {
         weather.setPressure(pressure);
         weather.setWindSpeed(windspeed);
         weather.setWindDirection(winddir);
-
         return weather;
     }
 

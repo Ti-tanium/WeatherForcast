@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -36,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.security.auth.callback.Callback;
+
+import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class WeatherMasterFragment extends Fragment {
     private static final String TAG="WeatherMasterFragment";
@@ -196,12 +200,20 @@ public class WeatherMasterFragment extends Fragment {
             String location=sharedPreferences.getString(getString(R.string.KEY_SETTING_LOCATION),"长沙");
             Boolean isBritishSystem=sharedPreferences.getBoolean(getString(R.string.KEY_SETTING_TEMPERATUREUNITS),false);
             String unit=isBritishSystem?"i":"m";
-            return new WeatherFetcher().fetchWeather(location,unit);
+            return new WeatherFetcher().fetchWeather(location,unit,getActivity());
         }
 
         @Override
         protected void onPostExecute(List<Weather> weathers) {
-            Weather todayWeather=weathers.get(0);
+            mWeathers=weathers;
+            if(!isNetworkConnected(getActivity())){
+                Log.i("NetWorkConnected:","false");
+                mWeathers=WeatherLab.get(getActivity()).getWeathers();
+            }else {
+                Log.i("NetWorkConnected:","true");
+                storeWeather();
+            }
+            Weather todayWeather=mWeathers.get(0);
 //            weathers.remove(0);
             String imageFileName="cond"+todayWeather.getCondition_code_day();
             int imageResId=Utils.getResourceByReflect(imageFileName);
@@ -211,11 +223,22 @@ public class WeatherMasterFragment extends Fragment {
             mTodayMaxTemp.setText(todayWeather.getTmp_max());
             mTodayMinTemp.setText(todayWeather.getTmp_min());
             mTodayWeatherCondition.setText(todayWeather.getCondition_day());
-            mWeathers=weathers;
             setupAdapter();
-            storeWeather();
         }
     }
+
+    public boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

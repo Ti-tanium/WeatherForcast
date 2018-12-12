@@ -1,9 +1,13 @@
 package com.example.asus.weatherforcast.weatherfetcher;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
 import com.example.asus.weatherforcast.Weather;
+import com.example.asus.weatherforcast.datebase.WeatherLab;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +20,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class WeatherFetcher {
     private static final String TAG="WeatherFetcher";
@@ -50,7 +56,7 @@ public class WeatherFetcher {
         return new String(getUrlBytes(urlSpec));
     }
 
-    public void parseJSON(List<Weather>weathers,JSONObject jsonBody) throws JSONException,IOException{
+    public void parseJSON(List<Weather>weathers,JSONObject jsonBody,Context context) throws JSONException,IOException{
         JSONArray HeWeather6=jsonBody.getJSONArray("HeWeather6");
         JSONObject WeatherJSON=HeWeather6.getJSONObject(0);
         JSONArray dailyForecastJSONArray=WeatherJSON.getJSONArray("daily_forecast");
@@ -79,7 +85,7 @@ public class WeatherFetcher {
         }
     }
 
-    public List<Weather> fetchWeather(String location,String unit){
+    public List<Weather> fetchWeather(String location,String unit,Context context){
         List<Weather>weathers=new ArrayList<>();
         try{
             String url= Uri.parse(HEFENG_API_URL)
@@ -92,7 +98,7 @@ public class WeatherFetcher {
             String jsonString=getUrlString(url);
             Log.i(TAG,"JSON Received:"+jsonString);
             JSONObject jsonBody=new JSONObject(jsonString);
-            parseJSON(weathers,jsonBody);
+            parseJSON(weathers,jsonBody,context);
         }catch (JSONException je){
             Log.e(TAG,"Failed to parse JSON",je);
         }catch (IOException ioe){
@@ -100,6 +106,7 @@ public class WeatherFetcher {
         }
         return weathers;
     }
+
 
 }
 
