@@ -38,7 +38,6 @@ public class SettingFragment extends PreferenceFragmentCompat implements AMapLoc
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
     private SharedPreferences mSharedPreferences;
-    private Activity mActivity;
 
     @Override
     public void onLocationChanged(AMapLocation amapLocation) {
@@ -76,7 +75,6 @@ public class SettingFragment extends PreferenceFragmentCompat implements AMapLoc
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.pref_settings,rootKey);
         mSharedPreferences=PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mActivity=getActivity();
 
         // location
         mLocationClient=new AMapLocationClient(getActivity().getApplicationContext());

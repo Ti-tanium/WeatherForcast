@@ -61,7 +61,6 @@ public class PollService extends IntentService {
         if(!isNetWorkAvailableAndConnected()){
             return;
         }
-
         Intent i= WeatherMasterActivity.newIntent(this);
         PendingIntent pi=PendingIntent.getActivity(this,0,i,0);
         String id = "my_channel_01";
